@@ -9,11 +9,19 @@ import { api } from "../../convex/_generated/api";
 
 export default function Home() {
     const organization = useOrganization();
+
     const user = useUser();
+    let accountName: string | undefined | null = undefined;
 
     let usableId: string | undefined = undefined;
     if (organization.isLoaded && user.isLoaded) {
-        usableId = organization.organization?.id ?? user.user?.id;
+        if (organization.organization?.id) {
+            usableId = organization.organization?.id;
+            accountName = organization.organization.name;
+        } else {
+            usableId = user.user?.id;
+            accountName = user.user?.fullName;
+        }
     }
 
     const files = useQuery(
@@ -73,7 +81,11 @@ export default function Home() {
 
             <div>
                 {files && files.length > 0 ? (
-                    files.map((file, idx) => <div key={idx}>{file.name}</div>)
+                    files.map((file, idx) => (
+                        <div key={idx}>
+                            {accountName} |{file.name}
+                        </div>
+                    ))
                 ) : (
                     <div>
                         <br />
