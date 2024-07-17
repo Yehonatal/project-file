@@ -10,6 +10,7 @@ import {
     UserProfile,
 } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import fileLogo from "./file.png";
 
 export function Header() {
     const userId = useAuth();
@@ -26,8 +27,12 @@ export function Header() {
     return (
         <div className=" max-w-screen-lg m-auto">
             <div className="container mx-auto flex flex-row  p-4 items-center justify-around">
-                <div className="flex-1">
-                    <h1 className="font-semibold text-2xl">FILE</h1>
+                <div className="flex-1 items-center gap-2 flex flex-row">
+                    <h1 className=" text-xl">F</h1>
+                    <div className="w-6 ">
+                        <img src="/file.png" alt="Platforms logo" />
+                    </div>
+                    <h1 className=" text-xl">LE</h1>
                 </div>
 
                 <div className="">
