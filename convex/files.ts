@@ -2,14 +2,14 @@ import { ConvexError, v } from "convex/values";
 import { mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
 import { getUser } from "./users";
 
-// async function hasAccessToOrg(
-//     ctx: MutationCtx | QueryCtx,
-//     tokenIdentifier: string,
-//     orgId: string
-// ) {
-//     const user = await getUser(ctx, tokenIdentifier);
-//     return user.orgIds.includes(orgId) || user.tokenIdentifier.includes(orgId);
-// }
+async function hasAccessToOrg(
+    ctx: MutationCtx | QueryCtx,
+    tokenIdentifier: string,
+    orgId: string
+) {
+    const user = await getUser(ctx, tokenIdentifier);
+    return user.orgIds.includes(orgId) || user.tokenIdentifier.includes(orgId);
+}
 
 export const createFile = mutation({
     args: {
@@ -23,14 +23,14 @@ export const createFile = mutation({
         }
         console.log(identity.tokenIdentifier);
 
-        // const hasAccess = await hasAccessToOrg(
-        //     ctx,
-        //     identity.tokenIdentifier,
-        //     args.orgId
-        // );
-        // if (!hasAccess) {
-        //     throw new ConvexError("User does not have access to this org!");
-        // }
+        const hasAccess = await hasAccessToOrg(
+            ctx,
+            identity.tokenIdentifier,
+            args.orgId
+        );
+        if (!hasAccess) {
+            throw new ConvexError("User does not have access to this org!");
+        }
 
         await ctx.db.insert("files", {
             name: args.name,
@@ -48,14 +48,14 @@ export const getFiles = query({
         if (!identity) {
             return [];
         }
-        // const hasAccess = await hasAccessToOrg(
-        //     ctx,
-        //     identity.tokenIdentifier,
-        //     args.orgId
-        // );
-        // if (!hasAccess) {
-        //     return [];
-        // }
+        const hasAccess = await hasAccessToOrg(
+            ctx,
+            identity.tokenIdentifier,
+            args.orgId
+        );
+        if (!hasAccess) {
+            return [];
+        }
 
         return ctx.db
             .query("files")
