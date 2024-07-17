@@ -1,4 +1,4 @@
-# Project - FILE , NextJs(Frontend), Convex(backend), Clerk(auth)
+# Project - FILE , NextJs(Frontend), Convex(backend), Clerk(auth), Shadcn(UI components)
 
 - [Setting a Next up with convex](https://docs.convex.dev/quickstart/nextjs)
 - [Setting up auth using clerk](https://docs.convex.dev/auth/clerk)
