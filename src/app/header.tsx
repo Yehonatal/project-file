@@ -25,7 +25,7 @@ export function Header() {
     }, [userId]);
 
     return (
-        <div className=" max-w-screen-lg m-auto">
+        <div className=" max-w-screen-lg m-auto mt-12">
             <div className="container mx-auto flex flex-row  p-4 items-center justify-around">
                 <div className="flex-1 items-center gap-2 flex flex-row">
                     <h1 className=" text-xl">F</h1>
