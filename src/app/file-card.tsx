@@ -6,7 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Doc } from "../../convex/_generated/dataModel";
+import { Doc, Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -15,7 +15,15 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Share, ExternalLink, EllipsisVertical, TrashIcon } from "lucide-react";
+import {
+    Share,
+    ExternalLink,
+    EllipsisVertical,
+    TrashIcon,
+    ImageIcon,
+    GanttChartIcon,
+    FileTextIcon,
+} from "lucide-react";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -26,10 +34,12 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
-import { useMutation } from "convex/react";
+import { ReactNode, useState } from "react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
+import { getFileUrl } from "../../convex/files";
 
 function FileCardActions({ file }: { file: Doc<"files"> }) {
     const { toast } = useToast();
@@ -110,22 +120,60 @@ function FileCardActions({ file }: { file: Doc<"files"> }) {
 }
 
 export function FileCard({ file }: { file: Doc<"files"> }) {
+    const typesIcons = {
+        image: <ImageIcon />,
+        pdf: <FileTextIcon />,
+        csv: <GanttChartIcon />,
+    } as Record<Doc<"files">["type"], ReactNode>;
+
+    const fileUrl = useQuery(api.files.getFileUrl, {
+        fileId: file.fileId as Id<"_storage">,
+    }) as string | null;
     return (
         <Card className="relative">
             <CardHeader>
                 <div className="flex justify-between">
-                    <CardTitle>{file.name}</CardTitle>
+                    <CardTitle>
+                        <div className="flex gap-2 items-center">
+                            <p>{typesIcons[file.type]}</p>
+                            <h2 className="text-xl ">{file.name}</h2>
+                        </div>
+                    </CardTitle>
                     <div className="absolute right-2 top-4">
                         <FileCardActions file={file} />
                     </div>
                 </div>
-                <CardDescription>Card Description</CardDescription>
+                {/* <CardDescription>
+                    Files will get their own description at some point in the
+                    development cycle.
+                </CardDescription> */}
             </CardHeader>
-            <CardContent>
-                <p>Card Content</p>
+            <CardContent className=" lg:h-[200px] flex justify-center items-center">
+                {file.type === "image" && (
+                    <Image
+                        className="w-full"
+                        alt={file.name}
+                        width="200"
+                        height="200"
+                        src={fileUrl!}
+                    />
+                )}
+                {file.type === "csv" && (
+                    <GanttChartIcon className="lg:w-24 lg:h-24 w-12 h-12" />
+                )}
+                {file.type === "pdf" && (
+                    <FileTextIcon className="lg:w-24 lg:h-24 w-12 h-12" />
+                )}
             </CardContent>
             <CardFooter>
-                <Button>Download</Button>
+                <Button
+                    onClick={() => {
+                        // TODO: Open a new tab on a file location on convex
+                        window.open(fileUrl!, "_blank");
+                    }}
+                >
+                    Download
+                </Button>
             </CardFooter>
         </Card>
     );

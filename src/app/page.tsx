@@ -68,10 +68,8 @@ export default function Home() {
                         )}
                         {!isLoading &&
                             files.length > 0 &&
-                            files.map((file, idx) => (
-                                <>
-                                    <FileCard key={idx} file={file} />
-                                </>
+                            files.map((file) => (
+                                <FileCard key={file._id} file={file} />
                             ))}
                     </>
                 )}
