@@ -46,55 +46,60 @@ export default function Home() {
 
     return (
         <main className="p-4 pt-12 select-none max-w-screen-lg m-auto ">
-            {isSignedIn && (
+            {!isLoading && (
                 <>
-                    {isLoading && (
-                        <div className="grid place-content-center justify-center h-[80vh]">
-                            <Loader2 className="mr-2 h-32 w-32 animate-spin" />
-                        </div>
-                    )}
-                    {!isLoading &&
-                        files.length > 0 &&
-                        files.map((file, idx) => (
-                            <>
-                                <div className="flex flex-row justify-between ">
-                                    <h1 className="text-2xl mb-4 font-extrabold">
-                                        YOUR <span className="">FILES</span>{" "}
-                                    </h1>
-                                    <UploadButton content="UPLOAD" />
-                                </div>
-                                <hr className="mt-4 mb-8" />
-                                <div className="grid gap-4 grid-cols-3 ">
-                                    <FileCard key={idx} file={file} />
-                                </div>
-                            </>
-                        ))}
-
-                    {files && files.length === 0 && (
-                        <div className="grid gap-4 grid-cols-3 ">
-                            <div className="col-span-3 row-span-3 relative">
-                                <img
-                                    className="w-full h-full opacity-15"
-                                    src="./empty.png"
-                                    alt="Empty"
-                                />
-                                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-gray-600">
-                                    <h1 className="text-2xl font-extrabold  mb-4">
-                                        DRIVE EMPTY
-                                    </h1>
-                                    <p className="mb-4">
-                                        You have no files, you can start
-                                        uploading know, only document types are
-                                        allowed with max size being less then
-                                        5mb.
-                                    </p>
-                                    <UploadButton content={<CirclePlus />} />
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <div className="flex flex-row justify-between ">
+                        <h1 className="text-2xl mb-4 font-extrabold">
+                            YOUR <span className="">FILES</span>{" "}
+                        </h1>
+                        <UploadButton content="UPLOAD" />
+                    </div>
+                    <hr className="mt-4 mb-8" />
                 </>
             )}
+
+            <div className="grid gap-4 lg:grid-cols-3 sm:grid-cols-1">
+                {isSignedIn && (
+                    <>
+                        {isLoading && (
+                            <div className="fixed inset-0 flex items-center justify-center">
+                                <Loader2 className="mr-2 h-32 w-32 animate-spin opacity-20" />
+                            </div>
+                        )}
+                        {!isLoading &&
+                            files.length > 0 &&
+                            files.map((file, idx) => (
+                                <>
+                                    <FileCard key={idx} file={file} />
+                                </>
+                            ))}
+                    </>
+                )}
+            </div>
+
+            {files && files.length === 0 && (
+                <div className="">
+                    <div className="col-span-3 row-span-3 relative">
+                        <img
+                            className="w-full h-full opacity-15"
+                            src="./empty.png"
+                            alt="Empty"
+                        />
+                        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-gray-600">
+                            <h1 className="text-2xl font-extrabold  mb-4">
+                                DRIVE EMPTY
+                            </h1>
+                            <p className="mb-4">
+                                You have no files, you can start uploading know,
+                                only document types are allowed with max size
+                                being less then 5mb.
+                            </p>
+                            <UploadButton content={<CirclePlus />} />
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {!isSignedIn && (
                 <div className="items-center flex flex-col">
                     <div className="font-extrabold text-4xl mb-4 flex gap-4">

@@ -103,75 +103,82 @@ export default function UploadButton({ content }: any) {
     const createFile = useMutation(api.files.createFile);
 
     return (
-        <Dialog
-            open={isFileDialogOpen}
-            onOpenChange={(isOpen) => {
-                setIsFileDialogOpen(isOpen);
-                form.reset();
-            }}
-        >
-            <DialogTrigger asChild>
-                <Button variant="outline" onClick={() => {}}>
-                    {content}
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle className="mb-4">Upload your file</DialogTitle>
-                    <DialogDescription>
-                        This file will be accessible by anyone in your
-                        organization
-                    </DialogDescription>
-                </DialogHeader>
-                <div>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-8"
-                        >
-                            <FormField
-                                control={form.control}
-                                name="title"
-                                render={({ field }) => (
-                                    <FormItem className="mt-4">
-                                        <div className="flex gap-4 items-center">
+        <div className="">
+            <Dialog
+                open={isFileDialogOpen}
+                onOpenChange={(isOpen) => {
+                    setIsFileDialogOpen(isOpen);
+                    form.reset();
+                }}
+            >
+                <DialogTrigger asChild>
+                    <Button variant="outline" onClick={() => {}}>
+                        {content}
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="mb-4">
+                            Upload your file
+                        </DialogTitle>
+                        <DialogDescription>
+                            This file will be accessible by anyone in your
+                            organization
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="p-4">
+                        <Form {...form}>
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-8"
+                            >
+                                <FormField
+                                    control={form.control}
+                                    name="title"
+                                    render={({ field }) => (
+                                        <FormItem className="mt-4">
+                                            <div className="flex gap-4 items-center">
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder="Enter title for the file"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                            </div>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="file"
+                                    render={() => (
+                                        <FormItem>
                                             <FormControl>
                                                 <Input
-                                                    placeholder="Enter title for the file"
-                                                    {...field}
+                                                    type="file"
+                                                    {...fileRef}
                                                 />
                                             </FormControl>
-                                        </div>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="file"
-                                render={() => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input type="file" {...fileRef} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button
-                                type="submit"
-                                disabled={form.formState.isSubmitting}
-                                className="flex gap-2"
-                            >
-                                {form.formState.isSubmitting && (
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                )}
-                                Submit
-                            </Button>
-                        </form>
-                    </Form>
-                </div>
-            </DialogContent>
-        </Dialog>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button
+                                    type="submit"
+                                    disabled={form.formState.isSubmitting}
+                                    className="flex gap-2"
+                                >
+                                    {form.formState.isSubmitting && (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    )}
+                                    Submit
+                                </Button>
+                            </form>
+                        </Form>
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </div>
     );
 }
