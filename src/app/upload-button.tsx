@@ -34,7 +34,7 @@ const formSchema = z.object({
         .refine((files) => files.length > 0, `Required`),
 });
 
-export default function UploadButton() {
+export default function UploadButton({ content }: any) {
     const organization = useOrganization();
     const user = useUser();
     const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -111,8 +111,8 @@ export default function UploadButton() {
             }}
         >
             <DialogTrigger asChild>
-                <Button variant="default" onClick={() => {}}>
-                    UPLOAD
+                <Button variant="outline" onClick={() => {}}>
+                    {content}
                 </Button>
             </DialogTrigger>
             <DialogContent>

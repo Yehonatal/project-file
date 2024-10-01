@@ -1,16 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { OrganizationSwitcher, SignedIn } from "@clerk/clerk-react";
-import {
-    SignedOut,
-    SignInButton,
-    useAuth,
-    UserButton,
-    UserProfile,
-} from "@clerk/nextjs";
+import { OrganizationSwitcher } from "@clerk/clerk-react";
+import { useAuth, UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import fileLogo from "./file.png";
 
 export function Header() {
     const userId = useAuth();
@@ -42,11 +35,6 @@ export function Header() {
                             <UserButton />
                         </div>
                     )}
-                    <SignedOut>
-                        <SignInButton mode="modal">
-                            <Button>Sign In</Button>
-                        </SignInButton>
-                    </SignedOut>
                 </div>
             </div>
         </div>
