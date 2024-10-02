@@ -11,26 +11,51 @@ import UploadButton from "./upload-button";
 import { FileCard } from "./file-card";
 import { Loader2, CirclePlus } from "lucide-react";
 import { SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
+import { SearchBar } from "./search-bar";
+
+function Placeholder() {
+    return (
+        <div className="">
+            <div className="col-span-3 row-span-3 relative">
+                <img
+                    className="w-full h-full opacity-15"
+                    src="./empty.png"
+                    alt="Empty"
+                />
+                <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-gray-600">
+                    <h1 className="text-2xl font-extrabold  mb-4">
+                        DRIVE EMPTY
+                    </h1>
+                    <p className="mb-4">
+                        You have no files, you can start uploading know, only
+                        document types are allowed with max size being less then
+                        5mb.
+                    </p>
+                    <UploadButton content={<CirclePlus />} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Home() {
     const organization = useOrganization();
     const user = useUser();
+    const [query, setQuery] = useState("");
 
     // Account
-    let accountName: string | undefined | null = undefined;
     let usableId: string | undefined = undefined;
     if (organization.isLoaded && user.isLoaded) {
         if (organization.organization?.id) {
             usableId = organization.organization?.id;
-            accountName = organization.organization.name;
         } else {
             usableId = user.user?.id;
-            accountName = user.user?.fullName;
         }
     }
 
     const files = useQuery(
         api.files.getFiles,
-        usableId ? { orgId: usableId } : "skip"
+        usableId ? { orgId: usableId, query } : "skip"
     );
     const { userId } = useAuth();
     const [isSignedIn, setIsSignedIn] = useState(false);
@@ -47,20 +72,22 @@ export default function Home() {
     return (
         <main className="p-4 pt-12 select-none max-w-screen-lg m-auto ">
             {!isLoading && (
-                <>
-                    <div className="flex flex-row justify-between ">
-                        <h1 className="text-2xl mb-4 font-extrabold">
+                <div>
+                    <div className="flex flex-row justify-between items-center">
+                        <h1 className="text-2xl mb-4 font-light">
                             YOUR <span className="">FILES</span>{" "}
                         </h1>
+                        <SearchBar query={query} setQuery={setQuery} />
+
                         <UploadButton content="UPLOAD" />
                     </div>
                     <hr className="mt-4 mb-8" />
-                </>
+                </div>
             )}
 
-            <div className="grid gap-4 lg:grid-cols-3 sm:grid-cols-1">
+            <div>
                 {isSignedIn && (
-                    <>
+                    <div className="grid gap-4 lg:grid-cols-3 sm:grid-cols-1">
                         {isLoading && (
                             <div className="fixed inset-0 flex items-center justify-center">
                                 <Loader2 className="mr-2 h-32 w-32 animate-spin opacity-20" />
@@ -71,32 +98,11 @@ export default function Home() {
                             files.map((file) => (
                                 <FileCard key={file._id} file={file} />
                             ))}
-                    </>
+                    </div>
                 )}
             </div>
 
-            {files && files.length === 0 && (
-                <div className="">
-                    <div className="col-span-3 row-span-3 relative">
-                        <img
-                            className="w-full h-full opacity-15"
-                            src="./empty.png"
-                            alt="Empty"
-                        />
-                        <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-gray-600">
-                            <h1 className="text-2xl font-extrabold  mb-4">
-                                DRIVE EMPTY
-                            </h1>
-                            <p className="mb-4">
-                                You have no files, you can start uploading know,
-                                only document types are allowed with max size
-                                being less then 5mb.
-                            </p>
-                            <UploadButton content={<CirclePlus />} />
-                        </div>
-                    </div>
-                </div>
-            )}
+            {files && !query && files.length === 0 && <Placeholder />}
 
             {!isSignedIn && (
                 <div className="items-center flex flex-col">

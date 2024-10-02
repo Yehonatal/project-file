@@ -136,6 +136,7 @@ export function FileCard({ file }: { file: Doc<"files"> }) {
                     <CardTitle>
                         <div className="flex gap-2 items-center">
                             <p>{typesIcons[file.type]}</p>
+
                             <h2 className="text-xl ">{file.name}</h2>
                         </div>
                     </CardTitle>
@@ -148,13 +149,13 @@ export function FileCard({ file }: { file: Doc<"files"> }) {
                     development cycle.
                 </CardDescription> */}
             </CardHeader>
-            <CardContent className=" lg:h-[200px] flex justify-center items-center">
+            <CardContent className=" lg:h-[75px] flex justify-center items-center">
                 {file.type === "image" && (
                     <Image
-                        className="w-full"
+                        className="w-full h-full object-cover "
                         alt={file.name}
-                        width="200"
-                        height="200"
+                        width="100"
+                        height="100"
                         src={fileUrl!}
                     />
                 )}

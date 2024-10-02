@@ -4,6 +4,7 @@
 import { OrganizationSwitcher } from "@clerk/clerk-react";
 import { useAuth, UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { SearchBar } from "./search-bar";
 
 export function Header() {
     const userId = useAuth();
@@ -19,8 +20,8 @@ export function Header() {
 
     return (
         <div className=" max-w-screen-lg m-auto mt-12">
-            <div className="container mx-auto flex flex-row  p-4 items-center justify-around">
-                <div className="flex-1 items-center gap-2 flex flex-row">
+            <div className="container mx-auto flex flex-row  p-4 items-center justify-around ">
+                <div className="flex-1 items-center gap-2 flex flex-row ">
                     <h1 className=" text-xl">F</h1>
                     <div className="w-6 ">
                         <img src="/file.png" alt="Platforms logo" />
@@ -28,10 +29,12 @@ export function Header() {
                     <h1 className=" text-xl">LE</h1>
                 </div>
 
-                <div className="">
+                <div className="flex  justify-center items-center p-2">
                     {isSignedIn && (
-                        <div className="flex gap-4">
-                            <OrganizationSwitcher />
+                        <div className="flex gap-4 items-center justify-center">
+                            <div className="mt-2">
+                                <OrganizationSwitcher />
+                            </div>
                             <UserButton />
                         </div>
                     )}
