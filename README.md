@@ -31,8 +31,8 @@
 ### **Project Overview**
 
 - **Project Name**: File Management System
-- **Description**: [Brief description of what the project does and its main features.]
-- **Objective**: [What you aim to learn and accomplish by building this project.]
+- **Description**: A mini google drive clone, With features that enable users to store different types of files on the cloud, get access to files, have organizational and personal accounts, search through and download files.
+- **Objective**: Learn NextJs, Convex, and Clerk
 
 ---
 
@@ -48,7 +48,27 @@
 
 ### **Initial Setup**
 
-- **Environment Setup**: [Explain any environment setup steps like Node.js, Next.js installation, and configuring any project-specific settings.]
+- **Environment Setup**: 
+	- [NextJs quickstart with Convex](https://docs.convex.dev/quickstart/nextjs) 
+		- Default For options `npx create-next-app@latest my-app` 
+		- `npm install convex`
+		- Set up a Convex dev deployment `npx convex dev` 
+		- Create a client component for the Convex provider and Wire up the ConvexClientProvider (wrap the children of the body element with the provider)
+		-  Verify you have Next's public convex url set up in .env
+		- Run your next app `npm run dev`
+
+	- [Clerk auth setup with Convex](https://docs.convex.dev/client/react/nextjs) 
+		-  Create a new application on the clerk dashboard with the sign up option you prefer
+ 		- Copy and add the API keys to .env
+		- Set up JWT for convex, Copy 	`Issuer` key and Apply changes 
+		- create an auth config file Paste in the Issuer URL from the JWT template and set applicationID to "convex" (Deploy changes on convex)
+		- Install clerk nextjs `npm install @clerk/nextjs`
+		- Wrap the convex provider with the clerk provider 
+		- Create a clerk middleware file [Auth to end points faster](https://clerk.com/docs/references/nextjs/clerk-middleware)
+			- You can add public routes `publicRoutes: ["/];` 
+	- [Shadcn/ui set up on next](https://ui.shadcn.com/docs/installation/next)
+		- `npx shadcn@latest init`
+
 - **Dependencies**: [List all major dependencies installed and why you used them.]
 
 ---
@@ -77,7 +97,7 @@
 
 ---
 
-### **UI (Shadcn)**
+### **UI (Shadcn + Lucide  Icons)**
 
 #### **Component Structure**
 
